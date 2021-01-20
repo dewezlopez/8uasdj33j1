@@ -1,0 +1,11 @@
+{
+  "name": "digital-ecosystem",
+  "version": "1.0.0",
+  "description": "Interactive map of Telstra's Digital Ecosystem",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "d880954",
+  "license": "ISC"
+}
