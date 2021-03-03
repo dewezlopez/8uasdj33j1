@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <script src="node_modules/d3/dist/d3.js"></script>
+    <link rel="stylesheet" href="able-web.css">
     <style>
       .additional {
         display: none;
@@ -10,15 +11,50 @@
       g:hover .additional {
         display: block;
       }
+
+      #wrapper {
+        width: 1000px;
+        height: 900px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #canvas * {
+        font-family: 'Telstra Akkurat', Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+
+      #canvas tspan {
+        background: #fff;
+      }
+
+      #logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     </style>
   </head>
   <body>
-    <svg
-      id="canvas"
-      width="900"
-      height="900"
-      style="border: 1px solid black"
-    ></svg>
+    <div id="wrapper">
+      <svg
+        id="canvas"
+        width="1000"
+        height="900"
+      ></svg>
+      <svg id="logo" role="img" height="48" width="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" fillRule="evenodd" transform="translate(4 3)">
+            <g transform="translate(0 4)">
+                <mask id="id-48a" fill="#fff"/>
+                <path id="LogoBottom" d="M10.472 3.665l-.693 4.193c-.143.754-.624.959-1.052.959H5.52l1.35-7.68C5.524.5 4.147.086 3.05.086c-1.043 0-1.89.29-2.454.988C.198 1.569 0 2.18 0 2.908c0 2.184 1.666 5.213 4.516 7.684C7.058 12.777 9.854 14 11.89 14c1.015 0 1.834-.32 2.371-.96.423-.495.592-1.137.592-1.865 0-2.121-1.678-5.095-4.38-7.51" fill="#0099F8"/>
+            </g>
+            <path id="LogoTop" d="M3.472.886L3 3.365h4.218L5.408 13h3.354c.448 0 .952-.2 1.102-.939l1.534-8.696h3.034c.535 0 .976-.343 1.094-.883L16 0H4.565c-.533 0-.975.345-1.093.886z" fill="#001E82"/>
+        </g>
+    </svg>
+    </div>
     <script>
       const data = [
         {
@@ -59,7 +95,7 @@
         {
           name: "Telstra Boost Web",
           amount: 468229,
-          orbit: "Standalone",
+          orbit: "Outer orbit",
           type: "Telstra Website",
           additional: "TBC",
         },
@@ -87,21 +123,21 @@
         {
           name: "AFL",
           amount: 6899,
-          orbit: "Standalone",
+          orbit: "Outer orbit",
           type: "Telstra Website",
           additional: "TBC",
         },
         {
           name: "Kayo",
           amount: 39145,
-          orbit: "Outer orbit",
+          orbit: "Standalone",
           type: "External Website",
           additional: "External",
         },
         {
           name: "Binge",
           amount: 49812,
-          orbit: "Outer orbit",
+          orbit: "Standalone",
           type: "External Website",
           additional: "External",
         },
@@ -122,21 +158,21 @@
         {
           name: "Telstra Air",
           amount: 27557,
-          orbit: "Standalone",
+          orbit: "Outer orbit",
           type: "Telstra Digital Website",
           additional: "TBC",
         },
         {
           name: "Netflix",
           amount: 17615,
-          orbit: "Outer orbit",
+          orbit: "Standalone",
           type: "External Website",
           additional: "External",
         },
         {
           name: "Telstra TV",
           amount: 9442,
-          orbit: "Standalone",
+          orbit: "Outer orbit",
           type: "Telstra Website",
           additional: "TBC",
         },
@@ -151,22 +187,17 @@
 
       const get_angle = () => Math.random() * Math.PI * 2;
 
-      const size_max = 50;
-      const size_min = 10;
+      const size_max = 20;
+      const size_min = 5;
       const svg = document.getElementById("canvas");
       const center = [svg.clientWidth / 2, svg.clientHeight / 2];
-      const rad_near = 150;
+      const rad_near = 160;
       const rad_far = 250;
-      const rad_outer = 420;
-      const rad_standalone_min = 300;
-      const rad_standalone_max = 400;
+      const rad_outer = 340;
+      const rad_standalone_min = 400;
+      const rad_standalone_max = 440;
 
-      // function get_angle(radius = null, type = cos) {
-      //   if (radius === null) {
-      //     return center[0];
-      //   }
-      //   return center[0] * Math[type](angle) * radius;
-      // }
+      
 
       for (const datum in data) {
         const angle = get_angle();
@@ -193,16 +224,16 @@
 
         obj.pos_y = (function () {
           if (obj.orbit == "core") {
-            return center[0];
+            return center[1];
           } else if (obj.orbit == "Integrated near") {
-            return center[0] + Math.sin(angle) * rad_near;
+            return center[1] + Math.sin(angle) * rad_near;
           } else if (obj.orbit == "Integrated far") {
-            return center[0] + Math.sin(angle) * rad_far;
+            return center[1] + Math.sin(angle) * rad_far;
           } else if (obj.orbit == "Outer orbit") {
-            return center[0] + Math.sin(angle) * rad_outer;
+            return center[1] + Math.sin(angle) * rad_outer;
           } else if (obj.orbit == "Standalone") {
             return (
-              center[0] +
+              center[1] +
               Math.sin(angle) *
                 (Math.random() * (rad_standalone_max - rad_standalone_min) +
                   rad_standalone_min)
@@ -213,19 +244,29 @@
 
       console.log(data);
 
+      function getLargestAmount() {
+        let largest = 0;
+        for (let i = 1; i<data.length; i++) {
+          if (data[i].amount > largest) largest = data[i].amount;
+        }
+        return largest;
+      }
+
+      const largestAmount = getLargestAmount();
+
       const scale = d3
         .scaleLinear()
-        .domain([10000, data[0].amount])
+        .domain([10000, largestAmount])
         .range([size_min, size_max]);
 
       function getFill(type) {
         switch (type) {
           case "Telstra Digital Website":
-            return "#E7685E";
+            return "#0064D2";
           case "Telstra Website":
-            return "#509293";
+            return "#5E50BF";
           case "External Website":
-            return "#F6CE4B";
+            return "#008381";
         }
       }
 
@@ -272,28 +313,41 @@
 
       const circles = group
         .append("circle")
-        .attr("r", (data) => scale(getScale(data.amount)))
+        .attr("r", (data) => { return scale(getScale(data.name !== "Telstra.com" ? data.amount : undefined))})
         .attr("cx", (data) => data.pos_x)
         .attr("cy", (data) => data.pos_y)
-        .style("stroke", "#787878")
         .style("fill", (data) => getFill(data.type));
 
-      const text = group
+      const content = group
         .append("text")
         .attr("dy", "1rem")
         .attr("x", (data) => data.pos_x)
-        .attr("y", (data) => data.pos_y + scale(getScale(data.amount)));
+        .attr("y", (data) => {
+          if (data.name === "Telstra.com") {
+            return center[1] + 20;
+          } else {
+            return data.pos_y + scale(getScale(data.amount));
+          }
+        });
 
-      text
+        content
         .append("tspan")
         .attr("x", (data) => data.pos_x)
         .attr("dy", "1rem")
         .attr("text-anchor", "middle")
         .text(
           (data) =>
-            `${data.name} - ${
-              data.amount != "na" ? abbreviateNumber(data.amount) : ""
-            }`
+            `${data.name}`
+        );
+
+        content
+        .append("tspan")
+        .attr("x", (data) => data.pos_x)
+        .attr("dy", "1rem")
+        .attr("text-anchor", "middle")
+        .text(
+          (data) =>
+            `${data.amount != "na" ? abbreviateNumber(data.amount) : ""}`
         );
 
       const additional_text = group
@@ -319,7 +373,7 @@
       orbit1.setAttribute("cy", center[1]);
       orbit1.setAttribute("r", rad_near);
       orbit1.setAttribute("fill", "none");
-      orbit1.setAttribute("stroke", "#ccc");
+      orbit1.setAttribute("stroke", "#777");
 
       svg.prepend(orbit1);
 
@@ -332,7 +386,8 @@
       orbit2.setAttribute("cy", center[1]);
       orbit2.setAttribute("r", rad_far);
       orbit2.setAttribute("fill", "none");
-      orbit2.setAttribute("stroke", "#ccc");
+      orbit2.setAttribute("stroke", "#777");
+      orbit2.setAttribute("stroke-dasharray", "5,5");
 
       svg.prepend(orbit2);
 
@@ -345,7 +400,9 @@
       orbit3.setAttribute("cy", center[1]);
       orbit3.setAttribute("r", rad_outer);
       orbit3.setAttribute("fill", "none");
-      orbit3.setAttribute("stroke", "#ccc");
+      orbit3.setAttribute("stroke", "#777");
+      orbit3.setAttribute("stroke-dasharray", "1,3");
+      orbit3.setAttribute("stroke-linecap", "round");
 
       svg.prepend(orbit3);
     </script>
