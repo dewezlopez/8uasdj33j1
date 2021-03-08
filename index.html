@@ -53,7 +53,7 @@
 
       #canvas-wrapper {
         width: 1000px;
-        height: 900px;
+        height: 950px;
         position: absolute;
         top: 0;
         left: 50%;
@@ -109,16 +109,17 @@
         border-radius: 50%;
       }
 
-      .td-circle {
-        background: #0064D2;
+      .t-circle {
+        border: 2px solid #5E50BF;
+        background: #5E50BF;
       }
 
-      .t-circle {
-        background: #5E50BF;
+      .td-circle {
+        border: 2px solid #0064D2;
         position: relative;
       }
 
-      .t-circle:after {
+      .td-circle:after {
         display: block;
         position: absolute;
         left: 50%;
@@ -128,25 +129,14 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: #fff;
+        background-color: #0064D2;
       }
 
       .e-circle {
-        background: #008381;
+        border: 2px solid #008381;
         position: relative;
       }
 
-      .e-circle:after {
-        display: block;
-        position: absolute;
-        width: 100%;
-        top:45%;
-        transform: translateY(-50%);
-        content: "x";
-        color: #fff;
-        font-family: 'Telstra Akkurat', Arial, Helvetica, sans-serif;
-        text-align:center;
-      }
 
       .a11y-x * {
         fill: #fff;
@@ -193,7 +183,7 @@
     <header>
       <h1>Digital Ecosystem</h1>
       <div class="header-content">
-        <h2>A Map of Telstra</h2>
+        <h2>A map of Telstra</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit deleniti doloremque placeat magni accusamus autem, necessitatibus iste, praesentium blanditiis optio rem unde voluptates facere obcaecati ipsum nihil, est alias molestiae.</p>
       </div>
     </header>
@@ -246,7 +236,14 @@
         class="canvas"
         width="1000"
         height="950"
-      ></svg>
+      >
+      <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
+        <path d="M-1,1 l2,-2
+                M0,4 l4,-4
+                M3,5 l2,-2"
+                style="stroke:#008381; stroke-width:1" />
+        </pattern>
+      </svg>
       <svg id="logo" role="img" height="48" width="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fillRule="evenodd" transform="translate(4 3)">
             <g transform="translate(0 4)">
@@ -477,7 +474,7 @@
         .domain([10000, largestAmount])
         .range([size_min, size_max]);
 
-      function getFill(type) {
+      function getColour(type) {
         switch (type) {
           case "Telstra Digital Website":
             return "#0064D2";
@@ -535,34 +532,28 @@
         .attr("r", (data) => { return scale(getScale(data.name !== "Telstra.com" ? data.amount : undefined))})
         .attr("cx", (data) => data.pos_x)
         .attr("cy", (data) => data.pos_y)
-        .attr("stroke", "#ffffff")
+        .attr("stroke",  (data) => data.type !== "Telstra Website" ? getColour(data.type) : "#ffffff")
         .attr("stroke-width", "2")
-        .style("fill", (data) => getFill(data.type));
+        .attr("fill", (data) => {
+          if (data.type === "Telstra Digital Website") {
+            return "#ffffff";
+          } else if (data.type === "External Website") {
+            return "url(#diagonalHatch)";
+          }
+          return getColour(data.type);
+        });
 
       // a11y inner circle
       group
         .append("circle")
         .attr("r", (data) => {
-          if (data.type === "Telstra Website") {
+          if (data.type === "Telstra Digital Website") {
             return scale(getScale(data.name !== "Telstra.com" ? data.amount : undefined))/3
             }  return 0;
           })
         .attr("cx", (data) => data.pos_x)
         .attr("cy", (data) => data.pos_y)
-        .style("fill", (data) => "#ffffff");
-
-      // a11y X marker
-      const a11yX = group
-        .append("text")
-        .attr("class", 'a11y-x')
-        .attr("dy", "1rem")
-        .attr("x", (data) => data.pos_x)
-        .attr("y", (data) => data.pos_y - 12)
-
-      a11yX
-        .append("tspan")
-        .attr("text-anchor", "middle")
-        .text((data) => data.type === "External Website" ? "x" : null);
+        .style("fill", (data) =>  getColour(data.type));
 
       // main text
       const content = group
