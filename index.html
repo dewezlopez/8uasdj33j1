@@ -4,13 +4,17 @@
     <script src="node_modules/d3/dist/d3.js"></script>
     <link rel="stylesheet" href="able-web.css">
     <style>
-      .additional {
+      g {
+        cursor: pointer;
+      }
+
+      g foreignObject {
         display: none;
       }
 
-      /* g:hover .additional {
+      g:hover foreignObject{
         display: block;
-      } */
+      }
 
       .canvas *, p, label, h1, h2 {
         font-family: 'Telstra Akkurat', Arial, Helvetica, sans-serif;
@@ -237,6 +241,21 @@
         width="1000"
         height="950"
       >
+      <style>
+        .additional {
+          display: block;
+          background: #e5e5e5;
+          padding: 5px;
+          margin: 5px;
+          border-top: 3px solid #0064D2;
+          z-index: 100;
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
+        }
+
+        .additional p {
+          text-shadow: none;
+        }
+      </style>
       <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
         <path d="M-1,1 l2,-2
                 M0,4 l4,-4
@@ -244,7 +263,7 @@
                 style="stroke:#008381; stroke-width:1" />
         </pattern>
       </svg>
-      <svg id="logo" role="img" height="48" width="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <svg id="logo" role="img" height="48" width="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml">
         <g fill="none" fillRule="evenodd" transform="translate(4 3)">
             <g transform="translate(0 4)">
                 <mask id="id-48a" fill="#fff"/>
@@ -262,126 +281,117 @@
           amount: 16340721,
           orbit: "core",
           type: "Telstra Digital Website",
-          additional: "Steve Sibley on AEM",
+          additional: {
+            PO: "Steve Sibley",
+            Platform: "AEM",
+          },
         },
         {
           name: "Telstra Webmail",
           amount: 305223,
           orbit: "Integrated near",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "PPR",
           amount: 1021905,
           orbit: "Integrated near",
           type: "Telstra Website",
-          additional: "TBC",
+          additional: {
+            PO: "Lorem Ipsum",
+            Platform: "PCF",
+            Tech: "React web",
+          },
         },
         {
           name: "Crowd Support",
           amount: 636890,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
-          additional: "TBC",
         },
         {
           name: "One Place",
           amount: 139553,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
-          additional: "TBC",
         },
         {
           name: "Telstra Boost Web",
           amount: 468229,
           orbit: "Outer orbit",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "Message Telstra",
           amount: 312393,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
-          additional: "TBC",
         },
         {
           name: "Fix.Telstra",
           amount: 274665,
           orbit: "Integrated near",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "PPA",
           amount: 220681,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
-          additional: "TBC",
         },
         {
           name: "AFL",
           amount: 6899,
           orbit: "Outer orbit",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "Kayo",
           amount: 39145,
           orbit: "Outer orbit",
           type: "External Website",
-          additional: "External",
         },
         {
           name: "Binge",
           amount: 49812,
           orbit: "Outer orbit",
           type: "External Website",
-          additional: "External",
         },
         {
           name: "Telstra Outages",
           amount: 290659,
           orbit: "Integrated near",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "Foxtel",
           amount: 22017,
           orbit: "Outer orbit",
           type: "External Website",
-          additional: "External",
         },
         {
           name: "Telstra Air",
           amount: 27557,
           orbit: "Outer orbit",
           type: "Telstra Digital Website",
-          additional: "TBC",
         },
         {
           name: "Netflix",
           amount: 17615,
           orbit: "Outer orbit",
           type: "External Website",
-          additional: "External",
         },
         {
           name: "Telstra TV",
           amount: 9442,
           orbit: "Outer orbit",
           type: "Telstra Website",
-          additional: "TBC",
         },
         {
           name: "Telstra Enterprise",
           amount: 2373,
           orbit: "Integrated far",
           type: "Telstra Website",
-          additional: "TBC",
         },
       ];
 
@@ -588,19 +598,42 @@
             `${data.amount != "na" ? abbreviateNumber(data.amount) : ""}`
         );
 
-      const additional_text = group
-        .append("text")
-        .attr("class", "additional")
-        .attr("dy", "1rem")
-        .attr("x", (data) => data.pos_x)
-        .attr("y", (data) => data.pos_y + 30 + scale(getScale(data.amount)));
 
-      additional_text
-        .append("tspan")
-        .attr("x", (data) => data.pos_x)
-        .attr("dy", "1rem")
-        .attr("text-anchor", "middle")
-        .text((data) => data.additional);
+      const additional = d3
+        .select("svg")
+        .selectAll("g")
+        .filter((data) => data.additional !== undefined)
+        .append('foreignObject')
+        .attr("width","150px")
+        .attr("height", "200px")
+        .attr("x", (data) => data.pos_x + scale(getScale(data.amount)) + 5)
+        .attr("y", (data) => data.pos_y);
+
+      const container = additional
+        .append('xhtml:div')
+        .attr("class", "additional")
+
+      container
+        .filter((data) => data.additional.PO !== undefined)
+        .append('xhtml:p')
+        .text((data) => {
+          return `PO - ${data.additional.PO}`
+        })
+
+      container
+        .filter((data) => data.additional.Platform !== undefined)
+        .append('xhtml:p')
+        .text((data) => {
+          return `Platform - ${data.additional.Platform}`
+        })
+
+      container
+        .filter((data) => data.additional.Tech !== undefined)
+        .append('xhtml:p')
+        .text((data) => {
+          return `Tech - ${data.additional.Tech}`
+        })
+
 
       const orbit1 = document.createElementNS(
         "http://www.w3.org/2000/svg",
