@@ -18,7 +18,7 @@
 
       .canvas *, p, label, h1, h2 {
         font-family: 'Telstra Akkurat', Arial, Helvetica, sans-serif;
-        font-size: 14px;
+        font-size: 16px;
         text-shadow: 0px 0px 1px white, 1px 0px 1px white, 1px 1px 1px white, 0px 1px 1px white, -1px 0px 1px white, -1px -1px 1px white, 0px -1px 1px white;
       }
 
@@ -94,6 +94,10 @@
         font-family: 'Telstra Akkurat', Arial, Helvetica, sans-serif;
       }
 
+      .header ~ .header {
+        margin-top: 20px;
+      }
+
       .key-table {
         margin-bottom: 30px;
       }
@@ -105,6 +109,12 @@
 
       .key-table p {
         margin: 0;
+      }
+
+      .key-table span {
+        display: block;
+        color: #777;
+        margin-top: 0.5em;
       }
 
       .key-circle {
@@ -168,8 +178,17 @@
 
       label {
         display: inline-block;
-        width: 50px;
         margin-bottom: 20px;
+      }
+
+      label.date {
+        width: 50px;
+      }
+
+      label input {
+        display: inline-block;
+        margin-right: 1em;
+        color: #000;
       }
 
       select {
@@ -195,12 +214,30 @@
     <div class="filters">
       <h3 class="header">Date Range:</h3>
       <div>
-        <label for="start">Start:</label><select name="" id="start"><option>Jan 01, 2021</option></select>
+        <label class="date" for="start">Start:</label><select name="" id="start">
+          <option>Oct 01, 2020</option>
+        </select>
       </div>
       <div>
-        <label for="end">End:</label><select name="" id="end"><option>Jan 31, 2021</option></select>
+        <label class="date" for="end">End:</label><select name="" id="end">
+          <option>Oct 31, 2020</option>
+        </select>
       </div>
-    </div>
+      <h3 class="header">Metric:</h3>
+      <div>
+        <label><input type="radio" name="metric" checked>Visits</label>
+      </div>
+      <div>
+        <label><input type="radio" name="metric">Visitors</label>
+      </div>
+      <h3 class="header">Assets:</h3>
+      <div>
+        <label><input type="checkbox" name="assets" checked>Web</label>
+      </div>
+      <div>
+        <label><input type="checkbox" name="assets">Native</label>
+      </div>
+      </div>
     <div class="keys">
       <h3 class="header">Key:</h3>
       <div>
@@ -221,15 +258,21 @@
         <table class="key-table">
           <tr>
             <td><div class="key-line near-line"></div></td>
-            <td><p>Integrated near</p></td>
+            <td>
+              <p>Integrated <span>Telstra site with SSO</span></p>
+            </td>
           </tr>
           <tr>
             <td><div class="key-line far-line"></div></td>
-            <td><p>Integrated far</p></td>
+            <td>
+              <p>Internal <span>Telstra site</span></p>
+            </td>
           </tr>
           <tr>
             <td><div class="key-line outer-line"></div></td>
-            <td><p>Non-Integrated</p></td>
+            <td>
+              <p>External <span>Linked non-Telstra site</span></p>
+            </td>
           </tr>
         </table>
       </div>
@@ -278,118 +321,127 @@
       const data = [
         {
           name: "Telstra.com",
-          amount: 16340721,
+          amount: 23136733,
           orbit: "core",
           type: "Telstra Digital Website",
-          additional: {
-            PO: "Steve Sibley",
-            Platform: "AEM",
-          },
+        },
+        {
+          name: "My Telstra",
+          amount: 16000000,
+          orbit: "core",
+          type: "Telstra Digital Website",
         },
         {
           name: "Telstra Webmail",
-          amount: 305223,
+          amount: 4831209,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
         {
           name: "PPR",
-          amount: 1021905,
+          amount: 4831209,
           orbit: "Integrated near",
           type: "Telstra Website",
           additional: {
-            PO: "Lorem Ipsum",
-            Platform: "PCF",
+            name: "Pre-Paid Recharge",
+            PO: "Milan Surduki",
+            Platform: "P2O",
             Tech: "React web",
           },
         },
         {
           name: "Crowd Support",
-          amount: 636890,
+          amount: 704079,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
         },
         {
-          name: "One Place",
-          amount: 139553,
+          name: "OnePlace",
+          amount: 328371,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
         },
         {
           name: "Telstra Boost Web",
-          amount: 468229,
+          amount: 427869,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "Message Telstra",
-          amount: 312393,
+          amount: 351691,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
         },
         {
           name: "Fix.Telstra",
-          amount: 274665,
+          amount: 244962,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
         {
           name: "PPA",
-          amount: 220681,
+          amount: 200484,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
+          additional: {
+            name: "Pre-Paid Activation",
+            PO: "Sam Stathis",
+            Platform: "P2O",
+            Tech: "React web",
+          },
         },
         {
           name: "AFL",
-          amount: 6899,
+          amount: 102702,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "Kayo",
-          amount: 39145,
+          amount: 102702,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Binge",
-          amount: 49812,
+          amount: 51952,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Telstra Outages",
-          amount: 290659,
+          amount: 215030,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
         {
           name: "Foxtel",
-          amount: 22017,
+          amount: 27296,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Telstra Air",
-          amount: 27557,
+          amount: 28100,
           orbit: "Outer orbit",
           type: "Telstra Digital Website",
         },
         {
           name: "Netflix",
-          amount: 17615,
+          amount: 24710,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Telstra TV",
-          amount: 9442,
+          amount: 9954,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "Telstra Enterprise",
-          amount: 2373,
+          amount: 5171,
           orbit: "Integrated far",
           type: "Telstra Website",
         },
@@ -398,10 +450,11 @@
       const get_angle = () => Math.random() * Math.PI * 2;
 
 
-      const size_max = 40;
-      const size_min = 10;
+        const size_max = 35;
+        const size_min = 15;
       const svg = document.getElementById("canvas");
       const center = [svg.clientWidth / 2, svg.clientHeight / 2];
+        const rad_core = 150;
       const rad_near = 190;
       const rad_far = 300;
       const rad_outer = 410;
@@ -412,19 +465,21 @@
       const planetsPerRadius = [0,0,0,0];
 
       for (const datum in data) {
-        if ( data[datum].orbit === "Integrated near") {
+        if (data[datum].orbit === "core") {
           planetsPerRadius[0] += 1;
-        } else if ( data[datum].orbit === "Integrated far") {
+        } else if (data[datum].orbit === "Integrated near") {
           planetsPerRadius[1] += 1;
-        } else if ( data[datum].orbit === "Outer orbit") {
+        } else if ( data[datum].orbit === "Integrated far") {
           planetsPerRadius[2] += 1;
+        } else if ( data[datum].orbit === "Outer orbit") {
+          planetsPerRadius[3] += 1;
         } else {
           planetsPerRadius[3] += 1;
         }
       }
 
       console.log("planetsPerRadius", planetsPerRadius);
-      let nearCount = farCount = outerCount = 1;
+        let coreCount = nearCount = farCount = outerCount = 1;
 
       function getPosition(ring, count) {
         const randomiser = ((Math.PI * 2 + Math.random())/planetsPerRadius[ring])*count
@@ -437,18 +492,20 @@
         let angle;
         obj.pos_x = (function () {
           if (obj.orbit == "core") {
-            return center[0];
+            angle = getPosition(0, coreCount)
+            return center[0] + Math.sin(angle) * rad_core;
+            coreCount++;
           } else if (obj.orbit == "Integrated near") {
-            angle = getPosition(0, nearCount)
+            angle = getPosition(1, nearCount)
             console.log(angle)
             nearCount++;
             return center[0] + Math.cos(angle) * rad_near;
           } else if (obj.orbit == "Integrated far") {
-            angle = getPosition(1, farCount)
+            angle = getPosition(2, farCount)
             farCount++;
             return center[0] + Math.cos(angle) * rad_far;
           } else if (obj.orbit == "Outer orbit") {
-            angle = getPosition(2, outerCount)
+            angle = getPosition(3, outerCount)
             outerCount++;
             return center[0] + Math.cos(angle) * rad_outer;
           }
@@ -456,7 +513,7 @@
 
         obj.pos_y = (function () {
           if (obj.orbit == "core") {
-            return center[1];
+            return center[1] + Math.sin(angle) * rad_core;
           } else if (obj.orbit == "Integrated near") {
             return center[1] + Math.sin(angle) * rad_near;
           } else if (obj.orbit == "Integrated far") {
@@ -480,7 +537,7 @@
       const largestAmount = getLargestAmount();
 
       const scale = d3
-        .scaleLinear()
+        .scaleSqrt()
         .domain([10000, largestAmount])
         .range([size_min, size_max]);
 
@@ -539,7 +596,7 @@
       // planets
       const circles = group
         .append("circle")
-        .attr("r", (data) => { return scale(getScale(data.name !== "Telstra.com" ? data.amount : undefined))})
+        .attr("r", (data) => { return scale(getScale(data.amount)) })
         .attr("cx", (data) => data.pos_x)
         .attr("cy", (data) => data.pos_y)
         .attr("stroke",  (data) => data.type !== "Telstra Website" ? getColour(data.type) : "#ffffff")
@@ -558,7 +615,7 @@
         .append("circle")
         .attr("r", (data) => {
           if (data.type === "Telstra Digital Website") {
-            return scale(getScale(data.name !== "Telstra.com" ? data.amount : undefined))/3
+            return scale(getScale(data.name !== "Telstra.com" && data.name !== "My Telstra" ? data.amount : undefined)) / 3
             }  return 0;
           })
         .attr("cx", (data) => data.pos_x)
