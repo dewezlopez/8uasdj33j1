@@ -225,10 +225,10 @@
       </div>
       <h3 class="header">Metric:</h3>
       <div>
-        <label><input type="radio" name="metric" checked>Visits</label>
+        <label><input type="radio" name="metric" data-metric="visits" checked>Visits</label>
       </div>
       <div>
-        <label><input type="radio" name="metric">Visitors</label>
+        <label><input type="radio" name="metric" data-metric="visitors">Visitors</label>
       </div>
       <h3 class="header">Assets:</h3>
       <div>
@@ -300,14 +300,19 @@
           text-shadow: none;
         }
       </style>
+      <radialGradient
+        id="grad1" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" style="stop-color: #fff"/>
+          <stop offset="70%" style="stop-color:#0064D2"/>
+      </radialGradient>
       <pattern id="diagonalHatch" patternUnits="userSpaceOnUse" width="4" height="4">
         <path d="M-1,1 l2,-2
-                M0,4 l4,-4
+                M0,4 l4,-4f
                 M3,5 l2,-2"
                 style="stroke:#008381; stroke-width:1" />
         </pattern>
       </svg>
-      <svg id="logo" role="img" height="48" width="48" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+      <svg id="logo" role="img" height="64" width="64" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
         <g fill="none" fillRule="evenodd" transform="translate(4 3)">
             <g transform="translate(0 4)">
@@ -323,79 +328,92 @@
       const data = [
         {
           name: "Telstra.com",
-          amount: 23136733,
+          visits: 23136733,
+          visitors: 18234873,
           orbit: "core",
           type: "Telstra Digital Website",
         },
         {
           name: "Crowd Support",
-          amount: 704079,
+          visits: 704079,
+          visitors: 502874,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
         },
         {
           name: "OnePlace",
-          amount: 328371,
+          visits: 328371,
+          visitors: 223119,
           orbit: "Integrated far",
           type: "Telstra Digital Website",
         },
         {
           name: "Telstra Boost Web",
-          amount: 427869,
+          visits: 427869,
+          visitors: 312323,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "AFL",
-          amount: 102702,
+          visits: 102702,
+          visitors: 50923,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "Kayo",
-          amount: 102702,
+          visits: 102702,
+          visitors: 40394,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Binge",
-          amount: 51952,
+          visits: 51952,
+          visitors: 10933,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Foxtel",
-          amount: 27296,
+          visits: 27296,
+          visitors: 8098,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Telstra Air",
-          amount: 28100,
+          visits: 28100,
+          visitors: 20091,
           orbit: "Outer orbit",
           type: "Telstra Digital Website",
         },
         {
           name: "Netflix",
-          amount: 24710,
+          visits: 24710,
+          visitors: 17098,
           orbit: "Outer orbit",
           type: "External Website",
         },
         {
           name: "Telstra TV",
-          amount: 9954,
+          visits: 9954,
+          visitors: 4023,
           orbit: "Outer orbit",
           type: "Telstra Website",
         },
         {
           name: "Telstra Enterprise",
-          amount: 5171,
+          visits: 5171,
+          visitors: 4032,
           orbit: "Integrated far",
           type: "Telstra Website",
         },
         {
           name: "PPR",
-          amount: 4831209,
+          visits: 4831209,
+          visitors: 4287183,
           orbit: "Integrated near",
           type: "Telstra Website",
           additional: {
@@ -407,38 +425,44 @@
         },
         {
           name: "My Telstra Web",
-          amount: 2398111,
+          visits: 2398111,
+          visitors: 1802887,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
         },
         {
           name: "Telstra Webmail",
-          amount: 4831209,
+          visits: 4831209,
+          visitors: 3928313,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
         {
           name: "Message Telstra",
-          amount: 351691,
+          visits: 351691,
+          visitors: 320913,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
         },
         {
           name: "Fix.Telstra",
-          amount: 244962,
+          visits: 244962,
+          visitors: 200993,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
 
         {
           name: "Telstra Outages",
-          amount: 215030,
+          visits: 215030,
+          visitors: 185729,
           orbit: "Integrated near",
           type: "Telstra Website",
         },
         {
           name: "PPA",
-          amount: 200484,
+          visits: 200484,
+          visitors: 180937,
           orbit: "Integrated near",
           type: "Telstra Digital Website",
           additional: {
@@ -451,8 +475,8 @@
       ];
 
       const get_angle = () => Math.random() * Math.PI * 2;
-      const size_max = 30;
-      const size_min = 15;
+      const size_max = 25;
+      const size_min = 10;
       const svg = document.getElementById("canvas");
       const center = [svg.clientWidth / 2, svg.clientHeight / 2];
       const rad_core = 60;
@@ -523,10 +547,10 @@
 
       console.log(data);
 
-      function getLargestAmount() {
-        let largest = 0;
+        function getLargestAmount() {
+          let largest = 0;
         for (let i = 1; i<data.length; i++) {
-          if (data[i].amount > largest) largest = data[i].amount;
+          if (data[i].visits > largest) largest = data[i].visits;
         }
         return largest;
       }
@@ -584,105 +608,130 @@
         return 10000;
       }
 
-      const group = d3
-        .select("svg")
-        .selectAll("g")
-        .data(data)
-        .join((enter) => enter.append("g"));
+      function clearPlanets() {
+        d3.select("svg").selectAll("g").remove()
+      }
 
-      // planets
-      const circles = group
-        .append("circle")
-        .attr("r", (data) => { return scale(getScale(data.amount)) })
-        .attr("cx", (data) => data.pos_x)
-        .attr("cy", (data) => data.pos_y)
-        .attr("stroke", (data) => getColour(data.type))
-        .attr("stroke-width", "2")
-        .attr("fill", (data) => {
-          if (data.type === "Telstra Digital Website") {
-            return "#ffffff";
-          } else if (data.type === "External Website") {
-            return "url(#diagonalHatch)";
-          }
-          return getColour(data.type);
-        });
+      renderPlanets = (value) => {
+        clearPlanets();
 
-      // a11y inner circle
-      group
-        .append("circle")
-        .attr("r", (data) => {
-          if (data.type === "Telstra Digital Website" && data.name !== "Telstra.com") {
-            return scale(getScale(data.amount)) / 2
-            }  return 0;
+        const group = d3
+          .select("svg")
+          .selectAll("g")
+          .data(data)
+          .join((enter) => enter.append("g"));
+
+        // planets
+        const circles = group
+          .append("circle")
+          .attr("r", (data) => { return scale(getScale(data[value])) })
+          .attr("cx", (data) => data.pos_x)
+          .attr("cy", (data) => data.pos_y)
+          .attr("stroke", (data) => getColour(data.type))
+          .attr("stroke-width", "2")
+          .attr("fill", (data) => {
+            if (data.type === "Telstra Digital Website") {
+              return "#ffffff";
+            } else if (data.type === "External Website") {
+              return "url(#diagonalHatch)";
+            }
+            return getColour(data.type);
           })
-        .attr("cx", (data) => data.pos_x)
-        .attr("cy", (data) => data.pos_y)
-        .style("fill", (data) =>  getColour(data.type));
+          .attr("style", (data) => {
+            if (data.name === "Telstra.com") {
+              return("fill:url(#grad1)");
+            }
+          });
 
-      // main text
-      const content = group
-        .append("text")
-        .attr("dy", "1rem")
-        .attr("x", (data) => data.pos_x)
-        .attr("y", (data) => {
-          return data.pos_y + scale(getScale(data.amount));
-        });
+        // a11y inner circle
+        group
+          .append("circle")
+          .attr("r", (data) => {
+            if (data.type === "Telstra Digital Website" && data.name !== "Telstra.com") {
+              return scale(getScale(data[value])) / 2
+              }  return 0;
+            })
+          .attr("cx", (data) => data.pos_x)
+          .attr("cy", (data) => data.pos_y)
+          .style("fill", (data) =>  getColour(data.type));
 
-        content
-        .append("tspan")
-        .attr("x", (data) => data.pos_x)
-        .attr("dy", "1rem")
-        .attr("text-anchor", "middle")
-        .text(
-          (data) =>
-            `${data.name}`
-        );
+        // main text
+        const content = group
+          .append("text")
+          .attr("dy", "1rem")
+          .attr("x", (data) => data.pos_x)
+          .attr("y", (data) => {
+            return data.pos_y + scale(getScale(data[value]));
+          });
 
-        content
-        .append("tspan")
-        .attr("x", (data) => data.pos_x)
-        .attr("dy", "1rem")
-        .attr("text-anchor", "middle")
-        .text(
-          (data) =>
-            `${data.amount != "na" ? abbreviateNumber(data.amount) : ""}`
-        );
+          content
+          .append("tspan")
+          .attr("x", (data) => data.pos_x)
+          .attr("dy", "1rem")
+          .attr("text-anchor", "middle")
+          .text(
+            (data) =>
+              `${data.name}`
+          );
+
+          content
+          .append("tspan")
+          .attr("x", (data) => data.pos_x)
+          .attr("dy", "1rem")
+          .attr("text-anchor", "middle")
+          .text(
+            (data) =>
+              `${data[value] != "na" ? abbreviateNumber(data[value]) : ""}`
+          );
 
 
-      const additional = d3
-        .select("svg")
-        .selectAll("g")
-        .filter((data) => data.additional !== undefined)
-        .append('foreignObject')
-        .attr("width", "200px")
-        .attr("height", "200px")
-        .attr("x", (data) => data.pos_x + scale(getScale(data.amount)) + 5)
-        .attr("y", (data) => data.pos_y);
+        const additional = d3
+          .select("svg")
+          .selectAll("g")
+          .filter((data) => data.additional !== undefined)
+          .append('foreignObject')
+          .attr("width", "200px")
+          .attr("height", "200px")
+          .attr("x", (data) => data.pos_x + scale(getScale(data[value])) + 5)
+          .attr("y", (data) => data.pos_y);
 
-      const container = additional
-        .append('xhtml:div')
-        .attr("class", "additional")
+        const container = additional
+          .append('xhtml:div')
+          .attr("class", "additional")
 
-      container
-        .filter((data) => data.additional.PO !== undefined)
-        .append('xhtml:p')
-        .text((data) => {
-          return `PO: ${data.additional.PO}`
+        container
+          .filter((data) => data.additional.PO !== undefined)
+          .append('xhtml:p')
+          .text((data) => {
+            return `PO: ${data.additional.PO}`
+          })
+
+        container
+          .filter((data) => data.additional.Platform !== undefined)
+          .append('xhtml:p')
+          .text((data) => {
+            return `Platform: ${data.additional.Platform}`
+          })
+
+        container
+          .filter((data) => data.additional.Tech !== undefined)
+          .append('xhtml:p')
+          .text((data) => {
+            return `Tech: ${data.additional.Tech}`
+          })
+      }
+
+      renderPlanets("visits");
+
+      const radios = document.querySelectorAll('[name="metric"]');
+      console.log(radios);
+      radios.forEach((radio) => {
+        radio.addEventListener("change", (e) => {
+          if (e.target.checked) {
+            renderPlanets(e.target.dataset.metric);
+          }
         })
-
-      container
-        .filter((data) => data.additional.Platform !== undefined)
-        .append('xhtml:p')
-        .text((data) => {
-          return `Platform: ${data.additional.Platform}`
-        })
-
-      container
-        .filter((data) => data.additional.Tech !== undefined)
-        .append('xhtml:p')
-        .text((data) => {
-          return `Tech: ${data.additional.Tech}`
-        })
+      })
 
 
       const orbit1 = document.createElementNS(
