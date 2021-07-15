@@ -1,0 +1,6 @@
+applications:
+  - name: able-digital-ecosystem
+    memory: 16M
+    instances: 1
+    routes:
+      - route: able-digital-ecosystem.apps.np.sdppcf.com
