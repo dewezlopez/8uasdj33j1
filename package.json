@@ -2,7 +2,7 @@
   "name": "digital-ecosystem",
   "version": "1.0.0",
   "description": "Interactive map of Telstra's Digital Ecosystem",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "rollup -c rollup.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
